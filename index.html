@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <title>#tagging_maps • Image Tagger Pro</title>
+
+  <!-- Font (opzionale) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- Stili -->
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Leaflet (per bbox interattiva nel modale OSM) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Vendor libs globali -->
+  <script defer src="https://unpkg.com/geotiff/dist-browser/geotiff.min.js"></script>
+  <script defer src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+
+  <!-- App -->
+  <script type="module" defer src="./js/main.js"></script>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="dot"></div>
+      <h1>#tagging_maps</h1>
+    </div>
+    <div class="hdr-actions">
+      <a class="link" href="guida.html" target="_blank" rel="noopener">Guida rapida</a>
+    </div>
+  </header>
+
+  <section class="controls" aria-label="pannello controlli">
+    <!-- IMMAGINE -->
+    <div class="control-group">
+      <label class="label">Immagine</label>
+      <input type="file" id="fileImage" accept=".tif,.tiff,image/*" />
+      <label id="pageLabel" for="pageSelect" class="hidden">Pagina TIFF</label>
+      <select id="pageSelect" class="hidden"></select>
+      <p class="hint">TIFF/GeoTIFF, PNG o JPG. Per multipagina, seleziona la pagina.</p>
+    </div>
+
+    <!-- DATI -->
+    <div class="control-group">
+      <label class="label">Carica dati d'appoggio — opzionale</label>
+      <input type="file" id="fileData" accept=".csv,.json" />
+      <p class="hint">oppure</p>
+      <div class="buttons">
+        <button id="connectOSM">Connetti a OSM</button>
+      </div>
+      <div id="mapping" class="mapping hidden" aria-live="polite">
+        <div>
+          <label>Campi <strong>da visualizzare</strong> (seleziona uno o più)</label>
+          <div id="displayFieldsBox" class="checks"></div>
+        </div>
+        <div>
+          <label><strong>ID</strong></label>
+          <select id="valueField"></select>
+        </div>
+      </div>
+      <p class="hint">Suggerimento: prova con <code>data/toponimi.csv</code> o <code>data/toponimi.json</code>.</p>
+    </div>
+
+    <!-- SPOTS -->
+    <div class="control-group">
+      <label class="label">Spots</label>
+      <div class="buttons" style="margin-bottom:8px">
+        <input type="file" id="fileSpotsImport" accept=".json" class="hidden" />
+        <button id="importSpots">Importa punti (JSON)</button>
+        <button id="exportJSON">Esporta JSON</button>
+        <button id="exportZIP">Esporta ZIP (viewer)</button>
+        <button id="exportIntersectCSV">Esporta intersezione (CSV)</button>
+        <button id="exportIntersectJSON">Esporta intersezione (JSON)</button>
+      </div>
+      <p class="hint">Esempi: <code>data/01.json</code> per <code>01.png</code>, <code>data/02.json</code> per <code>02.jpg</code>.</p>
+    </div>
+  </section>
+
+  <main>
+    <div id="viewport" aria-label="area pan/zoom">
+      <div id="stage">
+        <canvas id="canvas"></canvas>
+        <div id="markers"></div>
+      </div>
+    </div>
+
+    <aside class="sidebar">
+      <h2>Nuovo Tag</h2>
+      <form id="newSpotForm">
+        <div class="field">
+          <label>Nome (visibile)</label>
+          <input id="spotNome" type="text" list="displayValues" placeholder="es. Trentino" />
+          <datalist id="displayValues"></datalist>
+        </div>
+        <div class="field">
+          <label>ID</label>
+          <input id="spotValore" type="text" placeholder="es. 1565" />
+        </div>
+        <div class="field">
+          <label>Note</label>
+          <textarea id="spotNote" rows="2" placeholder="Annotazioni..."></textarea>
+        </div>
+        <div class="field grid-2">
+          <div>
+            <label>x (0–1)</label>
+            <input id="spotX" type="number" step="0.000001" min="0" max="1" />
+          </div>
+          <div>
+            <label>y (0–1)</label>
+            <input id="spotY" type="number" step="0.000001" min="0" max="1" />
+          </div>
+        </div>
+        <div class="buttons">
+          <button type="submit" class="accent">Aggiungi punto</button>
+          <button type="button" id="pickFromCanvas">Prendi coord dal canvas</button>
+        </div>
+      </form>
+
+      <h2>Punti</h2>
+      <div id="spotsList" class="spots-list"></div>
+    </aside>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-left">
+        <strong>#tagging_maps</strong>
+        <span class="sep">•</span>
+        <a class="link" href="README.md" target="_blank" rel="noopener">README</a>
+        <span class="sep">•</span>
+        <span>Licenza <a class="link" href="https://creativecommons.org/licenses/by-sa/4.0/deed.it" target="_blank" rel="noopener">CC BY-SA 4.0</a></span>
+      </div>
+      <div class="footer-right">
+        <a class="logo-link" href="https://github.com/erasmdif" target="_blank" rel="noopener" title="Erasmo (GitHub)">
+          <img src="images/logo_erasmo.svg" alt="Logo Erasmo" />
+        </a>
+        <a class="logo-link" href="https://www.unione.terredicastelli.mo.it/" target="_blank" rel="noopener" title="Unione Terre di Castelli">
+          <img src="images/logo_terre_unione.png" alt="Logo Unione Terre di Castelli" />
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modale OSM (overlay) -->
+  <div id="osmModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="osmTitle">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 id="osmTitle">Connetti a OSM (Overpass)</h3>
+        <button id="osmClose" class="icon-btn" aria-label="Chiudi">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="grid-2">
+          <div class="field">
+            <label>Endpoint</label>
+            <select id="osmEndpoint">
+              <option value="https://overpass-api.de/api/interpreter">overpass-api.de (EU)</option>
+              <option value="https://overpass.kumi.systems/api/interpreter">kumi.systems</option>
+              <option value="https://overpass.openstreetmap.ru/api/interpreter">openstreetmap.ru</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Limite risultati</label>
+            <input id="osmLimit" type="number" min="1" max="10000" value="500" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Tipi</label>
+          <div class="checks">
+            <label><input type="checkbox" id="osmTypeNode" checked> node</label>
+            <label><input type="checkbox" id="osmTypeWay" checked> way</label>
+            <label><input type="checkbox" id="osmTypeRel"> relation</label>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label>Chiave (tag)</label>
+            <input id="osmKey" type="text" placeholder='es. "place" o "amenity"' />
+          </div>
+          <div class="field">
+            <label>Valore (opzionale)</label>
+            <input id="osmValue" type="text" placeholder='es. "city" o "school"' />
+          </div>
+        </div>
+        <small class="hint">
+          Riferimenti: 
+          <a class="link" href="https://wiki.openstreetmap.org/wiki/Tagging" target="_blank" rel="noopener">Guida ai tag OSM</a> ·
+          <a class="link" href="https://wiki.openstreetmap.org/wiki/Map_features" target="_blank" rel="noopener">Elenco chiavi/valori (Map Features)</a>
+        </small>
+
+        <div class="field">
+          <label>Filtra per nome (contiene, opzionale)</label>
+          <input id="osmNameLike" type="text" placeholder='es. "Aiano"' />
+        </div>
+
+        <div class="field">
+          <label>Schema dati</label>
+          <div class="checks">
+            <label><input type="checkbox" id="osmIncludeAllTags" checked> Includi tutti i tag OSM (flatten)</label>
+          </div>
+          <small class="hint">Se attivo, ogni tag OSM diventa un campo selezionabile (es. <code>name</code>, <code>name:it</code>, <code>amenity</code>…). Se disattivo, si usa uno schema compatto (name, alternative_names, wikidata, …).</small>
+        </div>
+
+        <div class="field">
+          <label>Bounding box (S, W, N, E) — opzionale</label>
+          <div class="bbox">
+            <input id="osmSouth" type="number" step="0.000001" placeholder="Sud (lat)" />
+            <input id="osmWest"  type="number" step="0.000001" placeholder="Ovest (lon)" />
+            <input id="osmNorth" type="number" step="0.000001" placeholder="Nord (lat)" />
+            <input id="osmEast"  type="number" step="0.000001" placeholder="Est (lon)" />
+          </div>
+          <small class="hint">Lascia vuoto per cercare globalmente (sconsigliato).</small>
+        </div>
+
+        <div class="field">
+          <label>Seleziona bounding box su mappa (opzionale)</label>
+          <div id="osmMap" class="leaflet-embed"></div>
+          <div class="buttons" style="margin-top:8px">
+            <button id="osmDrawToggle">Disegna rettangolo</button>
+            <button id="osmUseBbox" class="accent">Usa bbox selezionata</button>
+            <button id="osmClearBbox">Pulisci</button>
+          </div>
+          <small class="hint">Clicca “Disegna rettangolo”, trascina sulla mappa, poi “Usa bbox selezionata”.</small>
+        </div>
+
+        <div id="osmStatus" class="hint" aria-live="polite"></div>
+      </div>
+      <div class="modal-foot">
+        <button id="osmFetch" class="accent">Recupera e usa come dataset</button>
+        <button id="osmCancel">Annulla</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

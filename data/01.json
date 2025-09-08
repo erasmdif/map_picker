@@ -1,0 +1,65 @@
+[
+  {
+    "id": "1",
+    "nome": "Trentino",
+    "valore": "146",
+    "note": "",
+    "x": 0.757135,
+    "y": 0.40869
+  },
+  {
+    "id": "2",
+    "nome": "Villa d'Aiano",
+    "valore": "540",
+    "note": "",
+    "x": 0.606123,
+    "y": 0.351396
+  },
+  {
+    "id": "3",
+    "nome": "Castel d'Aiano",
+    "valore": "181",
+    "note": "",
+    "x": 0.577848,
+    "y": 0.279638
+  },
+  {
+    "id": "4",
+    "nome": "Fanano",
+    "valore": "12",
+    "note": "la connotazione grafica della miniatura suggerisce un'importanza strategica sul fiume",
+    "x": 0.933469,
+    "y": 0.369028
+  },
+  {
+    "id": "6",
+    "nome": "Trignano",
+    "valore": "30",
+    "note": "",
+    "x": 0.739841,
+    "y": 0.302811
+  },
+  {
+    "id": "7",
+    "nome": "Ciano",
+    "valore": "20",
+    "note": "",
+    "x": 0.304924,
+    "y": 0.558097
+  },
+  {
+    "id": "8",
+    "nome": "Castello di Serravalle",
+    "valore": "164",
+    "note": "la mappa riporta unicamente il toponimo 'Serravalle'. Al tempo di produzione della mappa e dai dettagli presenti nella miniatura, risulta evidente che il riferimento sia al castello dominante sulla vallata",
+    "x": 0.405946,
+    "y": 0.703156
+  },
+  {
+    "id": "9",
+    "nome": "Tolè",
+    "valore": "300",
+    "note": "scritto con la denominazione 'Toledo' attestata storicamente",
+    "x": 0.179359,
+    "y": 0.301526
+  },
