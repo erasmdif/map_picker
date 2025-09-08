@@ -1,10 +1,8 @@
-# ⵌ Tagging Maps
+# Map_picker
 
 Annota **mappe/immagini** direttamente nel browser: carica la tua mappa, naviga e **clicca** per creare tag con Json associati (nome, valore, note, foreign key) e **esporta** il risultato. Progettato per funzionare direttamente online tramite **GitHub Pages**: nessuna installazione o download necessario.
 
 > **Privacy-by-design:** i file restano nel tuo browser (nessun upload). Il lavoro è salvato in automatico (autosave).
-
----
 
 <details open>
 <summary><strong>📑 Indice</strong></summary>
@@ -13,13 +11,13 @@ Annota **mappe/immagini** direttamente nel browser: carica la tua mappa, naviga 
   <tr>
     <td width="34%" valign="top">
       <ul>
-        <li><a href="#funzionalita-in-breve">✨ Funzionalità in breve</a></li>
-        <li><a href="#aprire-lapp-github-pages">🚀 Aprire l’app (GitHub Pages)</a></li>
-        <li><a href="#come-caricare-limmagine">🖼️ Come caricare l’immagine</a></li>
+        <li><a href="#features">✨ Funzionalità in breve</a></li>
+        <li><a href="#pages">🚀 Aprire l’app (GitHub Pages)</a></li>
+        <li><a href="#immagine">🖼️ Come caricare l’immagine</a></li>
         <li>
-          <a href="#carica-il-tuo-dataset">📚 Carica il tuo dataset</a>
+          <a href="#dataset">📚 Carica il tuo dataset</a>
           <ul>
-            <li><a href="#non-hai-una-lista-di-toponimi-gia-mappati-usa-lapi-per-osm">🌐 Non hai una lista di toponimi già mappati? Usa l'API per OSM!</a></li>
+            <li><a href="#api-osm">🌐 API OSM</a></li>
           </ul>
         </li>
       </ul>
@@ -27,26 +25,26 @@ Annota **mappe/immagini** direttamente nel browser: carica la tua mappa, naviga 
     <td width="33%" valign="top">
       <ul>
         <li>
-          <a href="#creare-modificare-spostare-i-tag">📍 Creare, modificare, spostare i tag</a>
+          <a href="#tag">📍 Creare, modificare, spostare i tag</a>
           <ul>
-            <li><a href="#aggiungere-un-tag">Aggiungere un tag</a></li>
-            <li><a href="#hai-sbagliato-a-inserire-o-popolare-un-tag">Hai sbagliato a inserire o popolare un TAG?</a></li>
+            <li><a href="#tag-add">Aggiungere un tag</a></li>
+            <li><a href="#tag-fix">Hai sbagliato a inserire o popolare un TAG?</a></li>
           </ul>
         </li>
-        <li><a href="#riprendere-il-lavoro">🔄 Riprendere il lavoro</a></li>
+        <li><a href="#resume">🔄 Riprendere il lavoro</a></li>
         <li>
-          <a href="#esportare-i-risultati">💾 Esportare i risultati</a>
+          <a href="#export">💾 Esportare i risultati</a>
           <ul>
-            <li><a href="#esporta-i-tuoi-tag">Esporta i tuoi TAG</a></li>
-            <li><a href="#esporta-la-tabella-dintersezione-per-il-tuo-database">🔗 Esporta la tabella d’intersezione per il tuo database</a></li>
+            <li><a href="#export-tags">Esporta i tuoi TAG</a></li>
+            <li><a href="#export-join">🔗 Tabella d’intersezione (database)</a></li>
           </ul>
         </li>
       </ul>
     </td>
     <td width="33%" valign="top">
       <ul>
-        <li><a href="#un-piccolo-riassunto-sui-dati-di-prova">🧪 Un piccolo riassunto sui dati di prova</a></li>
-        <li><a href="#requisiti-e-note">✅ Requisiti e note</a></li>
+        <li><a href="#demo">🧪 Un piccolo riassunto sui dati di prova</a></li>
+        <li><a href="#requisiti">✅ Requisiti e note</a></li>
       </ul>
     </td>
   </tr>
@@ -56,16 +54,24 @@ Annota **mappe/immagini** direttamente nel browser: carica la tua mappa, naviga 
 
 ---
 
+<!-- H2: ✨ Funzionalità in breve -->
+<a name="funzionalita-in-breve"></a>
+<a name="features"></a>
+
 ## ✨ Funzionalità in breve
 
 - Caricamento di **TIFF/GeoTIFF** (anche multipagina), **PNG**, **JPG**
 - Pan/zoom fluido e posizionamento di **punti** con coordinate normalizzate (0–1)
 - **Dataset CSV/JSON** per suggerimenti: etichette composte da più campi (concatenate con ` - `), selezione del campo da salvare come valore
-- **Editing rapido**: trascina i marker, modifica i va
+- **Editing rapido**: trascina i marker, modifica i valori
 - **Export** in JSON o **ZIP** con viewer interattivo (pan/zoom + tooltip), utilizzabile offline
 - **Autosave** trasparente nel browser
 
 ---
+
+<!-- H2: 🚀 Aprire l’app (GitHub Pages) -->
+<a name="aprire-lapp-github-pages"></a>
+<a name="pages"></a>
 
 ## 🚀 Aprire l’app (GitHub Pages)
 
@@ -77,7 +83,11 @@ L’app è subito utilizzabile **e non richiede installazioni**
 
 ---
 
-## 🖼️ Caricare l’immagine
+<!-- H2: 🖼️ Come caricare l’immagine -->
+<a name="come-caricare-limmagine"></a>
+<a name="immagine"></a>
+
+## 🖼️ Come caricare l’immagine
 
 Per iniziare, carica l'immagine che ti interessa 'taggare' direttamente dal tuo PC e importala nel progetto.
 
@@ -97,9 +107,13 @@ Non hai una mappa o vuoi fare un tentativo prima di iniziare? Usa i nostri dati 
 
 ---
 
-## 📚 Caricare il *dataset*
+<!-- H2: 📚 Carica il tuo dataset -->
+<a name="carica-il-tuo-dataset"></a>
+<a name="dataset"></a>
 
-Collega i tuoi tag ad elementi geolocalizzati caricando i tuoi dati e usali per la compilazione automatica di valorie e ID! Ecco come fare:
+## 📚 Carica il tuo *dataset*
+
+Collega i tuoi tag ad elementi geolocalizzati caricando i tuoi dati e usali per la compilazione automatica di valori e ID! Ecco come fare:
 
 >1. In **Dati** → carica un file **CSV** o **JSON**.
 
@@ -119,6 +133,10 @@ Sempre nella repo, troverai un piccolo dataset di prova con toponimo di alcune r
 > **Suggerimenti:**
 > - **Campi da visualizzare** → `name` e `alternative_names`  
 > - **Campo da immettere** → `id` (questo ID fungerà da chiave esterna per i dati riportati nel Json di prova)
+
+<!-- H3: 🌐 Non hai una lista di toponimi già mappati? Usa l'API per OSM! -->
+<a name="non-hai-una-lista-di-toponimi-gia-mappati-usa-lapi-per-osm"></a>
+<a name="api-osm"></a>
 
 ### 🌐 Non hai una lista di toponimi già mappati? Usa l'API per OSM!
 
@@ -144,11 +162,19 @@ Riferimenti utili:
 
 ---
 
+<!-- H2: 📍 Creare, modificare, spostare i tag -->
+<a name="creare-modificare-spostare-i-tag"></a>
+<a name="tag"></a>
+
 ## 📍 Creare, modificare, spostare i tag
 
 Finalmente sei pronto per "taggare la tua immagine". 
 Ecco come:
 👇
+
+<!-- H3: Aggiungere un tag -->
+<a name="aggiungere-un-tag"></a>
+<a name="tag-add"></a>
 
 ### ⵌ Aggiungere un tag
 >1. Porta il puntatore sul **punto** sul quale vuoi inserire il TAG;
@@ -160,7 +186,11 @@ Ecco come:
 >4. **Clicca su Aggiungi punto per salvare il punto**.
 
 
- ### ⚠️ Hai sbagliato a inserire o popolare un TAG?
+<!-- H3: Hai sbagliato a inserire o popolare un TAG? -->
+<a name="hai-sbagliato-a-inserire-o-popolare-un-tag"></a>
+<a name="tag-fix"></a>
+
+### ⚠️ Hai sbagliato a inserire o popolare un TAG?
 Nessun problema! Editalo o eliminalo quando vuoi!
 👇
 
@@ -175,6 +205,10 @@ Nessun problema! Editalo o eliminalo quando vuoi!
 ⚠️ NB: Ogni modifica attiva l’**autosave** nel browser.
 
 ---
+
+<!-- H2: 🔄 Riprendere il lavoro -->
+<a name="riprendere-il-lavoro"></a>
+<a name="resume"></a>
 
 ## 🔄 Riprendere il lavoro
 
@@ -195,7 +229,15 @@ Seleziona:
 
 ---
 
+<!-- H2: 💾 Esportare i risultati -->
+<a name="esportare-i-risultati"></a>
+<a name="export"></a>
+
 ## 💾 Esportare i risultati
+
+<!-- H3: Esporta i tuoi TAG -->
+<a name="esporta-i-tuoi-tag"></a>
+<a name="export-tags"></a>
 
 ### Esporta i tuoi TAG
 
@@ -207,6 +249,10 @@ Sei pronto finalmente per esportare il risultato finale. Usa gli strumenti di es
     - `spots.json`
     - `viewer.html` (pagina autonoma con pan/zoom e tooltip dei tag) **versione demo**
 
+
+<!-- H3: 🔗 Esporta la tabella d’intersezione per il tuo database -->
+<a name="esporta-la-tabella-dintersezione-per-il-tuo-database"></a>
+<a name="export-join"></a>
 
 ### 🔗 Esporta la tabella d’intersezione per il tuo *database*
 
@@ -221,6 +267,10 @@ Se hai lavorato con ID e chiavi esterne, probabilmente vorrei collegare i tuoi T
  - Procedere lasciando alcuni campi di `id_place` vuoti (*scelta sconsigliata*)
 
 ---
+
+<!-- H2: 🧪 Un piccolo riassunto sui dati di prova -->
+<a name="un-piccolo-riassunto-sui-dati-di-prova"></a>
+<a name="demo"></a>
 
 ## 🧪 Un piccolo riassunto sui dati di prova
 
@@ -241,6 +291,10 @@ Se hai deciso di provare il tool con gli strumenti, ecco un piccolo riassunto de
 5. **Esporta il progetto o i singoli tag** → Se hai scaricato il progetto, apri `viewer.html` e verifica i tooltip.
 
 ---
+
+<!-- H2: ✅ Requisiti e note -->
+<a name="requisiti-e-note"></a>
+<a name="requisiti"></a>
 
 ## ✅ Requisiti e note
 
