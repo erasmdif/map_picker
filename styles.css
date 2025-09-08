@@ -238,3 +238,18 @@ body.modal-open { overflow: hidden; }
 @media (max-width: 560px){
   .leaflet-embed{ height: 260px; }
 }
+/* --- Link GitHub con icona ---------------------------------------------- */
+.link.gh{
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+}
+.link.gh .gh-icon{
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  fill: currentColor;        
+  transition: transform .15s ease;
+}
+.link.gh:hover .gh-icon{ transform: translateY(-1px); }
+.link.gh.sm .gh-icon{ width: 14px; height: 14px; }

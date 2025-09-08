@@ -1,0 +1,18 @@
+[
+  {
+    "id": "1",
+    "nome": "Vignola",
+    "valore": "2274",
+    "note": "Inserito come \"castel di Vignola\" con riferimenti alle strade principali",
+    "x": 0.632621,
+    "y": 0.553591
+  },
+  {
+    "id": "2",
+    "nome": "Marano sul Panaro",
+    "valore": "217",
+    "note": "inserito solo come \"Marano\"",
+    "x": 0.340704,
+    "y": 0.081448
+  }
+]
