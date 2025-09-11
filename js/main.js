@@ -6,6 +6,7 @@ import { bindSpots } from './spots.js';
 import { bindExporter } from './exporter.js';
 import { initAutosave, loadAutosave } from './storage.js';
 import { bindOSM } from './osm.js';
+import { bindPG } from './pg.js';
 
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -16,7 +17,8 @@ window.addEventListener('DOMContentLoaded', () => {
   bindSpots();
   bindExporter();
   bindOSM();  
-
+  bindPG();
+  
   initAutosave();
   loadAutosave();
 

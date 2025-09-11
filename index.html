@@ -52,6 +52,7 @@
       <p class="hint">oppure</p>
       <div class="buttons">
         <button id="connectOSM">Connetti a OSM</button>
+        <button id="connectPG">Connetti a PostgreSQL</button>
       </div>
       <div id="mapping" class="mapping hidden" aria-live="polite">
         <div>
@@ -255,5 +256,112 @@
       </div>
     </div>
   </div>
+
+<!-- Modale PostgreSQL (overlay) -->
+<div id="pgModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="pgTitle">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h3 id="pgTitle">Connetti a PostgreSQL</h3>
+      <button id="pgClose" class="icon-btn" aria-label="Chiudi">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <!-- Modalità -->
+      <div class="field">
+        <label>Modalità</label>
+        <div class="checks">
+          <label><input type="radio" name="pgModeRadio" id="pgModeRest" checked> REST (PostgREST / Supabase)</label>
+          <label><input type="radio" name="pgModeRadio" id="pgModeProxy"> Proxy (Node)</label>
+        </div>
+        <small class="hint">
+          REST: endpoint tipo <code>http://localhost:3005</code> o <code>https://.../rest/v1</code> (Supabase).<br>
+          Proxy: il tuo micro-backend Node su <code>http://localhost:5055</code>.
+        </small>
+      </div>
+
+      <!-- Endpoint + Connetti -->
+      <div class="grid-2">
+        <div class="field">
+          <label>API backend</label>
+          <div class="row">
+            <input id="pgEndpoint" type="text" placeholder="http://localhost:3005" />
+            <button id="pgConnect" type="button">Connetti</button>
+          </div>
+        </div>
+        <div class="field">
+          <label>SSL</label>
+          <select id="pgSSL">
+            <option value="false">Disattivo</option>
+            <option value="true">Attivo</option>
+          </select>
+          <small class="hint">Usato solo in modalità Proxy (Node).</small>
+        </div>
+      </div>
+
+      <!-- Credenziali DB (solo Proxy; in REST puoi ignorare) -->
+      <div class="grid-2">
+        <div class="field">
+          <label>Host</label>
+          <input id="pgHost" type="text" placeholder="es. db.example.com" />
+        </div>
+        <div class="field">
+          <label>Porta</label>
+          <input id="pgPort" type="number" value="5432" />
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="field">
+          <label>Database</label>
+          <input id="pgDatabase" type="text" />
+        </div>
+        <div class="field">
+          <label>Utente</label>
+          <input id="pgUser" type="text" />
+        </div>
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input id="pgPassword" type="password" />
+      </div>
+
+      <hr />
+
+      <!-- Schema / Tabella -->
+      <div class="grid-2">
+        <div class="field">
+          <label>Schema</label>
+          <!-- In REST verrà convertito a input testo con default "public" -->
+          <select id="pgSchema"></select>
+        </div>
+        <div class="field">
+          <label>Tabella</label>
+          <!-- In REST verrà reso un input testo (con suggerimenti, se disponibili) -->
+          <select id="pgTable"></select>
+        </div>
+      </div>
+
+      <!-- Limite / Filtro -->
+      <div class="grid-2">
+        <div class="field">
+          <label>Anteprima righe</label>
+          <input id="pgLimit" type="number" min="1" max="2000" value="500" />
+        </div>
+        <div class="field">
+          <label>Filtro su <code>name</code> (opz.)</label>
+          <input id="pgNameLike" type="text" placeholder='es. "Modena"' />
+        </div>
+      </div>
+
+      <div id="pgStatus" class="hint" aria-live="polite"></div>
+    </div>
+
+    <div class="modal-foot">
+      <button id="pgFetch" class="accent">Recupera e usa come dataset</button>
+      <button id="pgCancel">Annulla</button>
+    </div>
+  </div>
+</div>
+
+
 </body>
 </html>

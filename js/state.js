@@ -8,9 +8,9 @@ export const state = {
   scale: 1, tx: 0, ty: 0,
   spots: /** @type {{id:string,nome:string,valore?:string,note?:string,x:number,y:number}[]} */([]),
   dataset: [],
-  displayFields: /** @type {string[]} */([]), // <— multi-campi da visualizzare
+  displayFields: /** @type {string[]} */([]),
   valueField: '',
-  imageName: '', 
+  imageName: '',
 };
 
 export const els = {};
@@ -29,7 +29,7 @@ export function bindDOM(){
 
   els.fileData        = /** @type {HTMLInputElement|null} */(byId('fileData'));
   els.mappingBox      = byId('mapping');
-  els.displayFieldsBox= byId('displayFieldsBox'); // <—
+  els.displayFieldsBox= byId('displayFieldsBox');
   els.valueFieldSel   = /** @type {HTMLSelectElement|null} */(byId('valueField'));
   els.datalist        = /** @type {HTMLDataListElement|null} */(byId('displayValues'));
 
@@ -46,7 +46,7 @@ export function bindDOM(){
   els.pickFromCanvasBtn = /** @type {HTMLButtonElement|null} */(byId('pickFromCanvas'));
   els.spotsList   = byId('spotsList');
 
-  // Pulsanti/inputs sezione “Spots” (sidebar)
+  // Spots buttons
   els.fileSpotsImport = /** @type {HTMLInputElement|null} */(byId('fileSpotsImport'));
   els.importSpotsBtn  = /** @type {HTMLButtonElement|null} */(byId('importSpots'));
   els.exportJSONBtn   = /** @type {HTMLButtonElement|null} */(byId('exportJSON'));
@@ -54,33 +54,61 @@ export function bindDOM(){
   els.exportIntersectCSVBtn  = /** @type {HTMLButtonElement|null} */(byId('exportIntersectCSV'));
   els.exportIntersectJSONBtn = /** @type {HTMLButtonElement|null} */(byId('exportIntersectJSON'));
 
-    // --- OSM modal + controls ---
-    els.connectOSMBtn = /** @type {HTMLButtonElement|null} */(byId('connectOSM'));
-    els.osmModal   = byId('osmModal');
-    els.osmClose   = /** @type {HTMLButtonElement|null} */(byId('osmClose'));
-    els.osmCancel  = /** @type {HTMLButtonElement|null} */(byId('osmCancel'));
-    els.osmFetch   = /** @type {HTMLButtonElement|null} */(byId('osmFetch'));
-    els.osmEndpoint= /** @type {HTMLSelectElement|null} */(byId('osmEndpoint'));
-    els.osmLimit   = /** @type {HTMLInputElement|null} */(byId('osmLimit'));
-    els.osmTypeNode= /** @type {HTMLInputElement|null} */(byId('osmTypeNode'));
-    els.osmTypeWay = /** @type {HTMLInputElement|null} */(byId('osmTypeWay'));
-    els.osmTypeRel = /** @type {HTMLInputElement|null} */(byId('osmTypeRel'));
-    els.osmKey     = /** @type {HTMLInputElement|null} */(byId('osmKey'));
-    els.osmValue   = /** @type {HTMLInputElement|null} */(byId('osmValue'));
-    els.osmNameLike= /** @type {HTMLInputElement|null} */(byId('osmNameLike'));
-    els.osmSouth   = /** @type {HTMLInputElement|null} */(byId('osmSouth'));
-    els.osmWest    = /** @type {HTMLInputElement|null} */(byId('osmWest'));
-    els.osmNorth   = /** @type {HTMLInputElement|null} */(byId('osmNorth'));
-    els.osmEast    = /** @type {HTMLInputElement|null} */(byId('osmEast'));
-    els.osmStatus  = byId('osmStatus');
+  // OSM
+  els.connectOSMBtn = /** @type {HTMLButtonElement|null} */(byId('connectOSM'));
+  els.osmModal   = byId('osmModal');
+  els.osmClose   = /** @type {HTMLButtonElement|null} */(byId('osmClose'));
+  els.osmCancel  = /** @type {HTMLButtonElement|null} */(byId('osmCancel'));
+  els.osmFetch   = /** @type {HTMLButtonElement|null} */(byId('osmFetch'));
+  els.osmEndpoint= /** @type {HTMLSelectElement|null} */(byId('osmEndpoint'));
+  els.osmLimit   = /** @type {HTMLInputElement|null} */(byId('osmLimit'));
+  els.osmTypeNode= /** @type {HTMLInputElement|null} */(byId('osmTypeNode'));
+  els.osmTypeWay = /** @type {HTMLInputElement|null} */(byId('osmTypeWay'));
+  els.osmTypeRel = /** @type {HTMLInputElement|null} */(byId('osmTypeRel'));
+  els.osmKey     = /** @type {HTMLInputElement|null} */(byId('osmKey'));
+  els.osmValue   = /** @type {HTMLInputElement|null} */(byId('osmValue'));
+  els.osmNameLike= /** @type {HTMLInputElement|null} */(byId('osmNameLike'));
+  els.osmSouth   = /** @type {HTMLInputElement|null} */(byId('osmSouth'));
+  els.osmWest    = /** @type {HTMLInputElement|null} */(byId('osmWest'));
+  els.osmNorth   = /** @type {HTMLInputElement|null} */(byId('osmNorth'));
+  els.osmEast    = /** @type {HTMLInputElement|null} */(byId('osmEast'));
+  els.osmStatus  = byId('osmStatus');
+  els.osmMapDiv    = /** @type {HTMLElement|null} */(byId('osmMap'));
+  els.osmDrawToggle= /** @type {HTMLButtonElement|null} */(byId('osmDrawToggle'));
+  els.osmUseBbox   = /** @type {HTMLButtonElement|null} */(byId('osmUseBbox'));
+  els.osmClearBbox = /** @type {HTMLButtonElement|null} */(byId('osmClearBbox'));
+  els.osmIncludeAllTags = /** @type {HTMLInputElement|null} */(byId('osmIncludeAllTags'));
 
-      // --- OSM modal + controls (bbox interattiva) ---
-    els.osmMapDiv    = /** @type {HTMLElement|null} */(byId('osmMap'));
-    els.osmDrawToggle= /** @type {HTMLButtonElement|null} */(byId('osmDrawToggle'));
-    els.osmUseBbox   = /** @type {HTMLButtonElement|null} */(byId('osmUseBbox'));
-    els.osmClearBbox = /** @type {HTMLButtonElement|null} */(byId('osmClearBbox'));
-    els.osmIncludeAllTags = /** @type {HTMLInputElement|null} */(byId('osmIncludeAllTags'));
+  // PG modal (comune)
+  els.connectPGBtn = /** @type {HTMLButtonElement|null} */(byId('connectPG'));
+  els.pgModal    = byId('pgModal');
+  els.pgClose    = byId('pgClose');
+  els.pgCancel   = byId('pgCancel');
+  els.pgFetch    = byId('pgFetch');
+  els.pgStatus   = byId('pgStatus');
+  els.pgEndpoint = /** @type {HTMLInputElement|null} */(byId('pgEndpoint'));
+  els.pgConnect  = /** @type {HTMLButtonElement|null} */(byId('pgConnect'));
 
+  // Modalità (usa quello che hai in HTML: select o radio)
+  els.pgMode     = /** @type {HTMLSelectElement|null} */(byId('pgMode'));
+  els.pgModeRest = /** @type {HTMLInputElement|null} */(byId('pgModeRest'));
+  els.pgModeProxy= /** @type {HTMLInputElement|null} */(byId('pgModeProxy'));
+
+  // Campi schema/tabella (verranno trasformati se serve)
+  els.pgSchema   = /** @type {HTMLElement|null} */(byId('pgSchema'));
+  els.pgTable    = /** @type {HTMLElement|null} */(byId('pgTable'));
+
+  // Limite e filtro
+  els.pgLimit    = /** @type {HTMLInputElement|null} */(byId('pgLimit'));
+  els.pgNameLike = /** @type {HTMLInputElement|null} */(byId('pgNameLike'));
+
+  // Credenziali per PROXY (riusiamo quelli che avevi già)
+  els.pgSSL      = /** @type {HTMLSelectElement|null} */(byId('pgSSL'));
+  els.pgHost     = /** @type {HTMLInputElement|null} */(byId('pgHost'));
+  els.pgPort     = /** @type {HTMLInputElement|null} */(byId('pgPort'));
+  els.pgDatabase = /** @type {HTMLInputElement|null} */(byId('pgDatabase'));
+  els.pgUser     = /** @type {HTMLInputElement|null} */(byId('pgUser'));
+  els.pgPassword = /** @type {HTMLInputElement|null} */(byId('pgPassword'));
 }
 
 export const util = {
